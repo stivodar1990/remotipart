@@ -4,13 +4,17 @@ module Remotipart
 
     class Engine < ::Rails::Engine
       initializer "remotipart.view_helper" do
-        ActionView::Base.send :include, RequestHelper
-        ActionView::Base.send :include, ViewHelper
+        ActiveSupport.on_load :action_view do
+          include RequestHelper
+          include ViewHelper
+        end
       end
 
       initializer "remotipart.controller_helper" do
-        ActionController::Base.send :include, RequestHelper
-        ActionController::Base.send :include, RenderOverrides
+        ActiveSupport.on_load :action_controller do
+          include RequestHelper
+          include RenderOverrides
+        end
       end
 
       initializer "remotipart.include_middelware" do
